@@ -55,7 +55,7 @@ const potteryPieces = [
     },
     {
         name: 'Bowl - Green & White',
-        images: ['Bowl_green_white_1.jpeg']
+        images: ['Bowl_green_white_1.jpeg', 'Bowl_white_green_2.jpeg']
     },
     {
         name: 'Bowl - Ocean',
@@ -64,10 +64,6 @@ const potteryPieces = [
     {
         name: 'Bowl - Sand',
         images: ['Bowl_sand_1.jpeg', 'Bowl_sand_2.jpeg']
-    },
-    {
-        name: 'Bowl - White & Green',
-        images: ['Bowl_white_green_2.jpeg']
     },
     {
         name: 'Mug - Pink & Red',
@@ -115,17 +111,22 @@ function initializeGalleries() {
         return;
     }
 
-    // Create gallery items for paintings - using same approach as pottery
+    // Create gallery items for paintings - using same structure as pottery
     paintingFiles.forEach((imageFile, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         galleryItem.dataset.index = index;
         galleryItem.dataset.type = 'painting';
         
+        // Create image container (same as pottery)
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-container';
+        
         const img = document.createElement('img');
         img.src = encodeFilePath(imageFile);
         img.alt = `Painting ${index + 1}`;
         img.loading = 'lazy';
+        img.className = 'active';
         
         // Add error handling for images
         img.onerror = function() {
@@ -133,7 +134,8 @@ function initializeGalleries() {
             this.style.display = 'none';
         };
         
-        galleryItem.appendChild(img);
+        imageContainer.appendChild(img);
+        galleryItem.appendChild(imageContainer);
         paintingsGrid.appendChild(galleryItem);
         
         // Add click event to open lightbox
