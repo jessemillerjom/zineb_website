@@ -74,6 +74,19 @@ const potteryPieces = [
 // Flatten array for lightbox navigation
 const potteryFiles = potteryPieces.flatMap(piece => piece.images);
 
+// Photography images
+const photographyFiles = [
+    'Photography/Broadmarsh_1.JPG',
+    'Photography/CocaCola_Denmark.JPG',
+    'Photography/light_through_trees.JPG',
+    'Photography/old_sheldon_church.JPG',
+    'Photography/Palm_under_water.JPG',
+    'Photography/red_mushroom.JPG',
+    'Photography/Small_flowers.JPG',
+    'Photography/sun_ray_through_trees.JPG',
+    'Photography/water_on_leaf.JPG'
+];
+
 let currentImageIndex = 0;
 let currentImageArray = [];
 
@@ -105,8 +118,9 @@ function loadHeroImages() {
 function initializeGalleries() {
     const paintingsGrid = document.getElementById('paintingsGrid');
     const potteryGrid = document.getElementById('potteryGrid');
+    const photographyGrid = document.getElementById('photographyGrid');
     
-    if (!paintingsGrid || !potteryGrid) {
+    if (!paintingsGrid || !potteryGrid || !photographyGrid) {
         console.error('Gallery grids not found!');
         return;
     }
@@ -199,6 +213,39 @@ function initializeGalleries() {
     });
     
     potteryGrid.appendChild(galleryItem);
+    });
+
+    // Create gallery items for photography - using same structure as paintings
+    photographyFiles.forEach((imageFile, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.dataset.index = index;
+        galleryItem.dataset.type = 'photography';
+        
+        // Create image container (same as paintings)
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-container';
+        
+        const img = document.createElement('img');
+        img.src = encodeFilePath(imageFile);
+        img.alt = `Photography ${index + 1}`;
+        img.loading = 'lazy';
+        img.className = 'active';
+        
+        // Add error handling for images
+        img.onerror = function() {
+            console.error('Failed to load image:', imageFile);
+            this.style.display = 'none';
+        };
+        
+        imageContainer.appendChild(img);
+        galleryItem.appendChild(imageContainer);
+        photographyGrid.appendChild(galleryItem);
+        
+        // Add click event to open lightbox
+        galleryItem.addEventListener('click', () => {
+            openLightbox(index, photographyFiles);
+        });
     });
 }
 
