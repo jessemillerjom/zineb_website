@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zineb - Pottery & Paintings</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Zineb</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#paintings">Paintings</a></li>
+                <li><a href="#pottery">Pottery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-images">
+            <img src="" alt="Zineb" class="hero-image hero-image-1" id="heroImage1">
+            <img src="" alt="Zineb" class="hero-image hero-image-2" id="heroImage2">
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Pottery & Paintings</h1>
+            <p class="hero-subtitle">A journey through clay and canvas, shaped by places and experiences</p>
+            <div class="hero-buttons">
+                <a href="#paintings" class="cta-button">View Paintings</a>
+                <a href="#pottery" class="cta-button cta-button-secondary">View Pottery</a>
+            </div>
+        </div>
+        <div class="hero-overlay"></div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>A Story in Art</h2>
+                    <p class="lead">Each piece—whether shaped in clay or painted on canvas—tells a story of Casablanca's vibrant markets, Montpellier's artistic heritage, California's golden coast, Lisbon's azure tiles, and Brooklyn's creative energy.</p>
+                    
+                    <div class="journey-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker morocco"></div>
+                            <div class="timeline-content">
+                                <h3>Casablanca, Morocco</h3>
+                                <p>Born and raised in the vibrant colors and textures of Morocco's largest city, where traditional craftsmanship meets modern expression.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker france"></div>
+                            <div class="timeline-content">
+                                <h3>Montpellier, France</h3>
+                                <p>Studied in the historic university city, absorbing European aesthetics and the refined elegance of French design.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker california"></div>
+                            <div class="timeline-content">
+                                <h3>California</h3>
+                                <p>Trained as a culinary chef, working in restaurants where the art of presentation and the beauty of functional objects became intertwined.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker portugal"></div>
+                            <div class="timeline-content">
+                                <h3>Lisbon, Portugal</h3>
+                                <p>Lived among the azulejo tiles and Atlantic light, where ceramic traditions run deep and color tells stories.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker brooklyn"></div>
+                            <div class="timeline-content">
+                                <h3>Brooklyn, NY</h3>
+                                <p>Now creating in the heart of New York's creative community, where all these influences converge in each handcrafted piece and painted canvas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="paintings" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Paintings</h2>
+            <p class="section-subtitle">Each painting captures moments of beauty, inspired by nature and the places that have shaped her journey</p>
+            
+            <div class="gallery-grid" id="paintingsGrid">
+                <!-- Painting images will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <section id="pottery" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Pottery</h2>
+            <p class="section-subtitle">Each piece is unique, shaped by hand and fired with intention</p>
+            
+            <div class="gallery-grid" id="potteryGrid">
+                <!-- Pottery images will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightboxImg">
+        <div class="lightbox-nav">
+            <button class="lightbox-prev">&#10094;</button>
+            <button class="lightbox-next">&#10095;</button>
+        </div>
+    </div>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get in Touch</h2>
+            <p class="section-subtitle">Interested in a custom piece or have questions about the work?</p>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p>Based in Brooklyn, NY</p>
+                    <p>Creating art that bridges cultures and continents</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Zineb. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
