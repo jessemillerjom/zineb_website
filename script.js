@@ -31,21 +31,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Image arrays
 const paintingFiles = [
-    'Scan of birthday candles.png',
-    'Scan of bougainvillea.png',
-    'Scan of field of poppies.png',
-    'Scan of flowers card.png',
-    'Scan of lavender.png',
-    'Scan of olive leaves.png',
-    'Scan of oranges.png',
-    'Scan of outdoor camping card.png',
-    'Scan of pomegranets.png',
-    'Scan of poppies .png', // Note: filename has trailing space
-    'Scan of rainbow olive leaves.png',
-    'Scan of roses.png',
-    'Scan of sunflowers.png',
-    'Scan of sunset.png',
-    'Scan of yellow flowers.png'
+    'birthday candles.png',
+    'bougainvillea.png',
+    'field of poppies.png',
+    'flowers card.png',
+    'lavender.png',
+    'olive leaves.png',
+    'oranges.png',
+    'outdoor camping card.png',
+    'pomegranets.png',
+    'poppies .png', // Note: filename has trailing space
+    'rainbow olive leaves.png',
+    'roses.png',
+    'sunflowers.png',
+    'sunset.png',
+    'yellow flowers.png'
 ];
 
 // Pottery pieces - grouped by piece (duplicates together)
@@ -79,8 +79,6 @@ const potteryPieces = [
 // Flatten array for lightbox navigation
 const potteryFiles = potteryPieces.flatMap(piece => piece.images);
 
-const paintingsGrid = document.getElementById('paintingsGrid');
-const potteryGrid = document.getElementById('potteryGrid');
 let currentImageIndex = 0;
 let currentImageArray = [];
 
@@ -90,49 +88,64 @@ function encodeFilePath(filename) {
     return filename.split('/').map(part => encodeURIComponent(part)).join('/');
 }
 
-// Load hero images
-document.addEventListener('DOMContentLoaded', () => {
+// Load hero images when DOM is ready
+function loadHeroImages() {
     const heroImage1 = document.getElementById('heroImage1');
     const heroImage2 = document.getElementById('heroImage2');
-    if (heroImage1) heroImage1.src = encodeFilePath('Zineb_in_Lamps.jpeg');
-    if (heroImage2) heroImage2.src = encodeFilePath('Zineb_in_Marraketch.jpeg');
-});
+    if (heroImage1) {
+        heroImage1.src = encodeFilePath('Zineb_in_Lamps.jpeg');
+        heroImage1.onerror = function() {
+            console.error('Failed to load hero image 1');
+        };
+    }
+    if (heroImage2) {
+        heroImage2.src = encodeFilePath('Zineb_in_Marraketch.jpeg');
+        heroImage2.onerror = function() {
+            console.error('Failed to load hero image 2');
+        };
+    }
+}
 
-// Create gallery items for paintings
-paintingFiles.forEach((imageFile, index) => {
-    const galleryItem = document.createElement('div');
-    galleryItem.className = 'gallery-item';
-    galleryItem.dataset.index = index;
-    galleryItem.dataset.type = 'painting';
+// Initialize galleries when DOM is ready
+function initializeGalleries() {
+    const paintingsGrid = document.getElementById('paintingsGrid');
+    const potteryGrid = document.getElementById('potteryGrid');
     
-    const img = document.createElement('img');
-    img.src = encodeFilePath(imageFile);
-    img.alt = `Painting ${index + 1}`;
-    img.loading = 'lazy';
-    
-    // Add error handling for images
-    img.onerror = function() {
-        console.error('Failed to load painting image:', imageFile);
-        console.error('Encoded path:', encodeFilePath(imageFile));
-        this.style.display = 'none';
-    };
-    
-    img.onload = function() {
-        console.log('Successfully loaded painting:', imageFile);
-    };
-    
-    galleryItem.appendChild(img);
-    paintingsGrid.appendChild(galleryItem);
-    
-    // Add click event to open lightbox
-    galleryItem.addEventListener('click', () => {
-        openLightbox(index, paintingFiles);
+    if (!paintingsGrid || !potteryGrid) {
+        console.error('Gallery grids not found!');
+        return;
+    }
+
+    // Create gallery items for paintings - using same approach as pottery
+    paintingFiles.forEach((imageFile, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.dataset.index = index;
+        galleryItem.dataset.type = 'painting';
+        
+        const img = document.createElement('img');
+        img.src = encodeFilePath(imageFile);
+        img.alt = `Painting ${index + 1}`;
+        img.loading = 'lazy';
+        
+        // Add error handling for images
+        img.onerror = function() {
+            console.error('Failed to load image:', imageFile);
+            this.style.display = 'none';
+        };
+        
+        galleryItem.appendChild(img);
+        paintingsGrid.appendChild(galleryItem);
+        
+        // Add click event to open lightbox
+        galleryItem.addEventListener('click', () => {
+            openLightbox(index, paintingFiles);
+        });
     });
-});
 
-// Create gallery items for pottery (grouped by piece)
-let potteryImageIndex = 0;
-potteryPieces.forEach((piece, pieceIndex) => {
+    // Create gallery items for pottery (grouped by piece)
+    let potteryImageIndex = 0;
+    potteryPieces.forEach((piece, pieceIndex) => {
     const galleryItem = document.createElement('div');
     galleryItem.className = 'gallery-item';
     galleryItem.dataset.type = 'pottery';
@@ -185,7 +198,19 @@ potteryPieces.forEach((piece, pieceIndex) => {
     });
     
     potteryGrid.appendChild(galleryItem);
-});
+    });
+}
+
+// Initialize everything when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        loadHeroImages();
+        initializeGalleries();
+    });
+} else {
+    loadHeroImages();
+    initializeGalleries();
+}
 
 // Lightbox functionality
 const lightbox = document.getElementById('lightbox');
