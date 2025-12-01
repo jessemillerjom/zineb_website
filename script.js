@@ -76,15 +76,15 @@ const potteryFiles = potteryPieces.flatMap(piece => piece.images);
 
 // Photography images
 const photographyFiles = [
-    'Photography/Broadmarsh_1.JPG',
-    'Photography/CocaCola_Denmark.JPG',
-    'Photography/light_through_trees.JPG',
-    'Photography/old_sheldon_church.JPG',
-    'Photography/Palm_under_water.JPG',
-    'Photography/red_mushroom.JPG',
-    'Photography/Small_flowers.JPG',
-    'Photography/sun_ray_through_trees.JPG',
-    'Photography/water_on_leaf.JPG'
+    'Broadmarsh_1.JPG',
+    'CocaCola_Denmark.JPG',
+    'light_through_trees.JPG',
+    'old_sheldon_church.JPG',
+    'Palm_under_water.JPG',
+    'red_mushroom.JPG',
+    'Small_flowers.JPG',
+    'sun_ray_through_trees.JPG',
+    'water_on_leaf.JPG'
 ];
 
 let currentImageIndex = 0;
