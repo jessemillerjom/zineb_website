@@ -31,7 +31,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Image arrays
 const paintingFiles = [
-    'birthday candles.png',
     'bougainvillea.png',
     'field of poppies.png',
     'flowers card.png',
