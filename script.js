@@ -91,8 +91,10 @@ let currentImageIndex = 0;
 let currentImageArray = [];
 
 // Helper function to encode file paths for URLs
+// Handles GitHub Pages case-sensitivity and spaces in filenames
 function encodeFilePath(filename) {
     // Split the filename into parts and encode each part
+    // This preserves folder structure while encoding special characters
     return filename.split('/').map(part => encodeURIComponent(part)).join('/');
 }
 
@@ -103,13 +105,15 @@ function loadHeroImages() {
     if (heroImage1) {
         heroImage1.src = encodeFilePath('Zineb_in_Lamps.jpeg');
         heroImage1.onerror = function() {
-            console.error('Failed to load hero image 1');
+            console.error('Failed to load hero image 1:', 'Zineb_in_Lamps.jpeg');
+            console.error('Tried path:', this.src);
         };
     }
     if (heroImage2) {
         heroImage2.src = encodeFilePath('Zineb_in_Marraketch.jpeg');
         heroImage2.onerror = function() {
-            console.error('Failed to load hero image 2');
+            console.error('Failed to load hero image 2:', 'Zineb_in_Marraketch.jpeg');
+            console.error('Tried path:', this.src);
         };
     }
 }
@@ -145,7 +149,15 @@ function initializeGalleries() {
         // Add error handling for images
         img.onerror = function() {
             console.error('Failed to load image:', imageFile);
-            this.style.display = 'none';
+            console.error('Encoded path:', img.src);
+            console.error('Current URL:', window.location.href);
+            // Try unencoded path as fallback
+            if (img.src !== imageFile) {
+                console.log('Trying unencoded path...');
+                this.src = imageFile;
+            } else {
+                this.style.display = 'none';
+            }
         };
         
         imageContainer.appendChild(img);
@@ -182,7 +194,15 @@ function initializeGalleries() {
         // Add error handling for images
         img.onerror = function() {
             console.error('Failed to load image:', imageFile);
-            this.style.display = 'none';
+            console.error('Encoded path:', img.src);
+            console.error('Current URL:', window.location.href);
+            // Try unencoded path as fallback
+            if (img.src !== imageFile) {
+                console.log('Trying unencoded path...');
+                this.src = imageFile;
+            } else {
+                this.style.display = 'none';
+            }
         };
         
         imageContainer.appendChild(img);
@@ -235,7 +255,15 @@ function initializeGalleries() {
         // Add error handling for images
         img.onerror = function() {
             console.error('Failed to load image:', imageFile);
-            this.style.display = 'none';
+            console.error('Encoded path:', img.src);
+            console.error('Current URL:', window.location.href);
+            // Try unencoded path as fallback
+            if (img.src !== imageFile) {
+                console.log('Trying unencoded path...');
+                this.src = imageFile;
+            } else {
+                this.style.display = 'none';
+            }
         };
         
         imageContainer.appendChild(img);
