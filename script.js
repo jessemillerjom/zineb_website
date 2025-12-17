@@ -29,7 +29,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Image arrays
+// Helper function to get card filename for a painting
+function getCardFilename(paintingFile) {
+    // Extract base name and extension
+    const lastDot = paintingFile.lastIndexOf('.');
+    const baseName = paintingFile.substring(0, lastDot);
+    const extension = paintingFile.substring(lastDot);
+    return baseName + '_card' + extension;
+}
+
+// Image arrays - paintings
 const paintingFiles = [
     'bougainvillea.png',
     'field of poppies.png',
@@ -47,11 +56,30 @@ const paintingFiles = [
     'yellow flowers.png'
 ];
 
+// Create painting pieces - structure similar to pottery
+// Each piece will have [card, painting] if card exists, or just [painting]
+const paintingPieces = paintingFiles.map(paintingFile => {
+    const cardFile = getCardFilename(paintingFile);
+    const name = paintingFile.replace('.png', '').replace('.jpg', '').replace('.jpeg', '').replace(' card', '');
+    
+    // Start with just painting, will add card if it exists
+    return {
+        name: name,
+        images: [paintingFile], // Default to just painting, will update if card exists
+        card: cardFile,
+        painting: paintingFile
+    };
+});
+
 // Pottery pieces - grouped by piece (duplicates together)
 const potteryPieces = [
     {
         name: 'All Pottery',
         images: ['All_pottery.jpeg']
+    },
+    {
+        name: 'Blue Bowls',
+        images: ['blue_bowls_1.jpeg', 'blue_bowls_2.jpeg', 'blue_bowls_3.jpeg', 'blue_bowls_4.jpeg', 'blue_bowls_5.jpeg', 'blue_bowls_6.jpeg', 'blue_bowls_7.jpeg', 'blue_bowls_8.jpeg']
     },
     {
         name: 'Bowl - Green & White',
@@ -64,6 +92,14 @@ const potteryPieces = [
     {
         name: 'Bowl - Sand',
         images: ['Bowl_sand_1.jpeg', 'Bowl_sand_2.jpeg']
+    },
+    {
+        name: 'Mug - Blue & Green',
+        images: ['blue_green_mugs_1.jpeg', 'blue_green_mugs_2.jpeg', 'blue_green_mugs_4.jpeg', 'blue_green_mugs_5.jpeg']
+    },
+    {
+        name: 'Mug - Green',
+        images: ['green_mug_1.jpeg', 'green_mug_2.jpeg', 'green_mug_3.jpeg']
     },
     {
         name: 'Mug - Pink & Red',
@@ -129,45 +165,89 @@ function initializeGalleries() {
         return;
     }
 
-    // Create gallery items for paintings - using same structure as pottery
-    paintingFiles.forEach((imageFile, index) => {
+    // Create gallery items for paintings - check for _card files
+    // Similar structure to pottery, but check if card exists first
+    let paintingImageIndex = 0;
+    paintingPieces.forEach((piece, pieceIndex) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
-        galleryItem.dataset.index = index;
         galleryItem.dataset.type = 'painting';
+        galleryItem.dataset.pieceIndex = pieceIndex;
         
-        // Create image container (same as pottery)
+        // Create image container
         const imageContainer = document.createElement('div');
         imageContainer.className = 'image-container';
         
-        const img = document.createElement('img');
-        img.src = encodeFilePath(imageFile);
-        img.alt = `Painting ${index + 1}`;
-        img.loading = 'lazy';
-        img.className = 'active';
+        // Start with painting as default (most won't have cards)
+        const mainImg = document.createElement('img');
+        mainImg.src = encodeFilePath(piece.painting);
+        mainImg.alt = `${piece.name} - Painting`;
+        mainImg.loading = 'lazy';
+        mainImg.className = 'active';
+        mainImg.dataset.index = paintingImageIndex;
         
-        // Add error handling for images
-        img.onerror = function() {
-            console.error('Failed to load image:', imageFile);
-            console.error('Encoded path:', img.src);
-            console.error('Current URL:', window.location.href);
-            // Try unencoded path as fallback
-            if (img.src !== imageFile) {
-                console.log('Trying unencoded path...');
-                this.src = imageFile;
-            } else {
-                this.style.display = 'none';
+        // Create painting image for second view (only used if card exists)
+        const paintingImg = document.createElement('img');
+        paintingImg.src = encodeFilePath(piece.painting);
+        paintingImg.alt = `${piece.name} - Painting`;
+        paintingImg.loading = 'lazy';
+        paintingImg.className = '';
+        paintingImg.style.display = 'none';
+        
+        // Default to just painting (no card)
+        piece.images = [piece.painting];
+        
+        // Check if card exists by trying to load it
+        const testCard = new Image();
+        testCard.onload = function() {
+            // Card exists - replace main image with card and add painting as second
+            mainImg.src = encodeFilePath(piece.card);
+            mainImg.alt = `${piece.name} - Card`;
+            imageContainer.appendChild(paintingImg);
+            paintingImg.dataset.index = paintingImageIndex + 1;
+            piece.images = [piece.card, piece.painting];
+            
+            // Show indicator for 2 photos
+            const indicator = galleryItem.querySelector('.multi-image-indicator');
+            if (indicator) {
+                indicator.textContent = '2 photos';
+                indicator.style.display = 'block';
             }
         };
+        testCard.onerror = function() {
+            // Card doesn't exist - keep just painting, no indicator needed
+            // piece.images already set to [piece.painting]
+        };
+        testCard.src = encodeFilePath(piece.card);
         
-        imageContainer.appendChild(img);
+        imageContainer.appendChild(mainImg);
+        paintingImageIndex++;
+        
         galleryItem.appendChild(imageContainer);
-        paintingsGrid.appendChild(galleryItem);
+        
+        // Add multiple images indicator (only shown if card exists - 2 photos)
+        const indicator = document.createElement('div');
+        indicator.className = 'multi-image-indicator';
+        indicator.style.display = 'none';
+        indicator.textContent = '2 photos';
+        galleryItem.appendChild(indicator);
+        
+        // Add piece name label
+        const label = document.createElement('div');
+        label.className = 'piece-label';
+        label.textContent = piece.name;
+        galleryItem.appendChild(label);
         
         // Add click event to open lightbox
         galleryItem.addEventListener('click', () => {
-            openLightbox(index, paintingFiles);
+            // Rebuild lightbox array based on current piece.images arrays
+            const lightboxArray = paintingPieces.flatMap(p => p.images);
+            // Calculate the starting index by summing images from all previous pieces
+            const firstImageIndex = paintingPieces.slice(0, pieceIndex).reduce((sum, p) => sum + p.images.length, 0);
+            openLightbox(firstImageIndex, lightboxArray);
         });
+        
+        paintingsGrid.appendChild(galleryItem);
     });
 
     // Create gallery items for pottery (grouped by piece)
@@ -215,7 +295,7 @@ function initializeGalleries() {
     if (piece.images.length > 1) {
         const indicator = document.createElement('div');
         indicator.className = 'multi-image-indicator';
-        indicator.textContent = `${piece.images.length} views`;
+        indicator.textContent = `${piece.images.length} photos`;
         galleryItem.appendChild(indicator);
     }
     
@@ -235,7 +315,7 @@ function initializeGalleries() {
     potteryGrid.appendChild(galleryItem);
     });
 
-    // Create gallery items for photography - using same structure as paintings
+    // Create gallery items for photography - using same structure as paintings (simple images)
     photographyFiles.forEach((imageFile, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
@@ -299,12 +379,17 @@ function openLightbox(index, imageArray) {
     currentImageIndex = index;
     currentImageArray = imageArray;
     lightboxImg.src = encodeFilePath(imageArray[index]);
+    
+    // Remove greeting card view (no longer using 3D effect)
+    lightbox.classList.remove('greeting-card-view');
+    
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
 
 function closeLightbox() {
     lightbox.classList.remove('active');
+    lightbox.classList.remove('greeting-card-view');
     document.body.style.overflow = 'auto';
     currentImageArray = [];
 }
@@ -313,6 +398,7 @@ function showNextImage() {
     if (currentImageArray.length > 0) {
         currentImageIndex = (currentImageIndex + 1) % currentImageArray.length;
         lightboxImg.src = encodeFilePath(currentImageArray[currentImageIndex]);
+        lightbox.classList.remove('greeting-card-view');
     }
 }
 
@@ -320,6 +406,7 @@ function showPrevImage() {
     if (currentImageArray.length > 0) {
         currentImageIndex = (currentImageIndex - 1 + currentImageArray.length) % currentImageArray.length;
         lightboxImg.src = encodeFilePath(currentImageArray[currentImageIndex]);
+        lightbox.classList.remove('greeting-card-view');
     }
 }
 
@@ -394,4 +481,3 @@ document.querySelectorAll('.timeline-item').forEach((item, index) => {
     item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
     observer.observe(item);
 });
-
