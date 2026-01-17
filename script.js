@@ -31,29 +31,34 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Helper function to get card filename for a painting
 function getCardFilename(paintingFile) {
+    // Handle folder path (e.g., "paintings/bougainvillea.png")
+    const pathParts = paintingFile.split('/');
+    const filename = pathParts[pathParts.length - 1];
+    const folder = pathParts.length > 1 ? pathParts.slice(0, -1).join('/') + '/' : '';
+    
     // Extract base name and extension
-    const lastDot = paintingFile.lastIndexOf('.');
-    const baseName = paintingFile.substring(0, lastDot);
-    const extension = paintingFile.substring(lastDot);
-    return baseName + '_card' + extension;
+    const lastDot = filename.lastIndexOf('.');
+    const baseName = filename.substring(0, lastDot);
+    const extension = filename.substring(lastDot);
+    return folder + baseName + '_card' + extension;
 }
 
 // Image arrays - paintings
 const paintingFiles = [
-    'bougainvillea.png',
-    'field of poppies.png',
-    'flowers card.png',
-    'lavender.png',
-    'olive leaves.png',
-    'oranges.png',
-    'outdoor camping card.png',
-    'pomegranets.png',
-    'poppies .png', // Note: filename has trailing space
-    'rainbow olive leaves.png',
-    'roses.png',
-    'sunflowers.png',
-    'sunset.png',
-    'yellow flowers.png'
+    'paintings/bougainvillea.png',
+    'paintings/field of poppies.png',
+    'paintings/flowers card.png',
+    'paintings/lavender.png',
+    'paintings/olive leaves.png',
+    'paintings/oranges.png',
+    'paintings/outdoor camping card.png',
+    'paintings/pomegranets.png',
+    'paintings/poppies .png', // Note: filename has trailing space
+    'paintings/rainbow olive leaves.png',
+    'paintings/roses.png',
+    'paintings/sunflowers.png',
+    'paintings/sunset.png',
+    'paintings/yellow flowers.png'
 ];
 
 // Create painting pieces - structure similar to pottery
@@ -75,35 +80,39 @@ const paintingPieces = paintingFiles.map(paintingFile => {
 const potteryPieces = [
     {
         name: 'All Pottery',
-        images: ['All_pottery.jpeg']
+        images: ['pottery/All_pottery.jpeg']
     },
     {
         name: 'Blue Bowls',
-        images: ['blue_bowls_1.jpeg', 'blue_bowls_2.jpeg', 'blue_bowls_3.jpeg', 'blue_bowls_4.jpeg', 'blue_bowls_5.jpeg', 'blue_bowls_6.jpeg', 'blue_bowls_7.jpeg', 'blue_bowls_8.jpeg']
+        images: ['pottery/blue_bowls_1.jpeg', 'pottery/blue_bowls_2.jpeg', 'pottery/blue_bowls_3.jpeg', 'pottery/blue_bowls_4.jpeg', 'pottery/blue_bowls_5.jpeg', 'pottery/blue_bowls_6.jpeg', 'pottery/blue_bowls_7.jpeg', 'pottery/blue_bowls_8.jpeg']
     },
     {
         name: 'Bowl - Green & White',
-        images: ['Bowl_green_white_1.jpeg', 'Bowl_white_green_2.jpeg']
+        images: ['pottery/Bowl_green_white_1.jpeg', 'pottery/Bowl_white_green_2.jpeg']
     },
     {
         name: 'Bowl - Ocean',
-        images: ['Bowl_ocean_1.jpeg', 'Bowl_ocean_2.jpeg']
+        images: ['pottery/Bowl_ocean_1.jpeg', 'pottery/Bowl_ocean_2.jpeg']
     },
     {
         name: 'Bowl - Sand',
-        images: ['Bowl_sand_1.jpeg', 'Bowl_sand_2.jpeg']
+        images: ['pottery/Bowl_sand_1.jpeg', 'pottery/Bowl_sand_2.jpeg']
     },
     {
         name: 'Mug - Blue & Green',
-        images: ['blue_green_mugs_1.jpeg', 'blue_green_mugs_2.jpeg', 'blue_green_mugs_4.jpeg', 'blue_green_mugs_5.jpeg']
+        images: ['pottery/blue_green_mugs_1.jpeg', 'pottery/blue_green_mugs_2.jpeg', 'pottery/blue_green_mugs_4.jpeg', 'pottery/blue_green_mugs_5.jpeg']
     },
     {
         name: 'Mug - Green',
-        images: ['green_mug_1.jpeg', 'green_mug_2.jpeg', 'green_mug_3.jpeg']
+        images: ['pottery/green_mug_1.jpeg', 'pottery/green_mug_2.jpeg', 'pottery/green_mug_3.jpeg']
     },
     {
         name: 'Mug - Pink & Red',
-        images: ['Mug_pink_red_1.jpeg', 'Mug_ping_red_2.jpeg'] // Note: keeping both filenames as they are
+        images: ['pottery/Mug_pink_red_1.jpeg', 'pottery/Mug_ping_red_2.jpeg'] // Note: keeping both filenames as they are
+    },
+    {
+        name: 'Dragon Egg Holder',
+        images: ['pottery/dragon_egg_holder_1.jpeg', 'pottery/dragon_egg_holder_2.jpeg', 'pottery/dragon_egg_holder_3.jpeg']
     },
 ];
 
@@ -112,15 +121,15 @@ const potteryFiles = potteryPieces.flatMap(piece => piece.images);
 
 // Photography images
 const photographyFiles = [
-    'Broadmarsh_1.JPG',
-    'CocaCola_Denmark.JPG',
-    'light_through_trees.JPG',
-    'old_sheldon_church.JPG',
-    'Palm_under_water.JPG',
-    'red_mushroom.JPG',
-    'Small_flowers.JPG',
-    'sun_ray_through_trees.JPG',
-    'water_on_leaf.JPG'
+    'photography/Broadmarsh_2.JPG',
+    'photography/CocaCola_Denmark.JPG',
+    'photography/light_through_trees.JPG',
+    'photography/old_sheldon_church.JPG',
+    'photography/Palm_under_water.JPG',
+    'photography/red_mushroom.JPG',
+    'photography/Small_flowers.JPG',
+    'photography/sun_ray_through_trees.JPG',
+    'photography/water_on_leaf.JPG'
 ];
 
 let currentImageIndex = 0;
