@@ -10,35 +10,59 @@
       {%- endif -%}
     </div>
 
-    <div class="instagram-grid">
-      {%- for block in section.blocks -%}
-        <a href="{{ block.settings.link | default: '#' }}" class="instagram-item" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
-          {%- if block.settings.image != blank -%}
-            <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.caption | default: 'Instagram post' }}" loading="lazy">
-          {%- else -%}
-            <div class="instagram-placeholder"></div>
-          {%- endif -%}
-          <div class="instagram-hover">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
-          </div>
-        </a>
-      {%- else -%}
-        {%- for i in (1..6) -%}
-          <div class="instagram-item instagram-placeholder-item">
-            <div class="instagram-placeholder"></div>
-          </div>
+    {%- if section.settings.embed_code != blank -%}
+      {%- comment -%}
+        Live feed via a widget service (e.g. LightWidget, Snapwidget).
+        Paste the embed code from your chosen service into the theme editor.
+      {%- endcomment -%}
+      <div class="instagram-embed-wrap">
+        {{ section.settings.embed_code }}
+      </div>
+
+    {%- elsif section.blocks.size > 0 -%}
+      {%- comment -%} Manually curated posts added via the theme editor {%- endcomment -%}
+      <div class="instagram-grid">
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.link | default: 'https://instagram.com/' | append: section.settings.instagram_handle }}"
+             class="instagram-item" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 600 }}"
+                   alt="{{ block.settings.caption | default: 'Instagram post by @' | append: section.settings.instagram_handle }}"
+                   loading="lazy">
+            {%- else -%}
+              <div class="instagram-placeholder"></div>
+            {%- endif -%}
+            <div class="instagram-hover">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </div>
+          </a>
         {%- endfor -%}
-      {%- endfor -%}
-    </div>
+      </div>
+
+    {%- else -%}
+      {%- comment -%} Fallback: no embed code, no manual posts yet {%- endcomment -%}
+      <a href="https://instagram.com/{{ section.settings.instagram_handle | default: 'zinebmakes' }}"
+         target="_blank" rel="noopener" class="instagram-fallback">
+        <div class="instagram-fallback-inner">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          <p>@{{ section.settings.instagram_handle | default: 'zinebmakes' }}</p>
+          <span>Follow on Instagram →</span>
+        </div>
+      </a>
+    {%- endif -%}
 
     {%- if section.settings.instagram_handle != blank -%}
       <div class="section-cta">
         <a href="https://instagram.com/{{ section.settings.instagram_handle }}" target="_blank" rel="noopener" class="btn btn-outline">
-          Follow on Instagram
+          Follow @{{ section.settings.instagram_handle }}
         </a>
       </div>
     {%- endif -%}
@@ -66,7 +90,7 @@
         {
           "type": "url",
           "id": "link",
-          "label": "Post link"
+          "label": "Post URL"
         }
       ]
     }
@@ -81,7 +105,14 @@
     {
       "type": "text",
       "id": "instagram_handle",
-      "label": "Instagram handle (without @)"
+      "label": "Instagram handle (without @)",
+      "default": "zinebmakes"
+    },
+    {
+      "type": "html",
+      "id": "embed_code",
+      "label": "Live feed embed code",
+      "info": "Paste embed code from LightWidget (lightwidget.com) or a similar free service for a live Instagram feed. Leave blank to use manually added posts below."
     }
   ],
   "presets": [
