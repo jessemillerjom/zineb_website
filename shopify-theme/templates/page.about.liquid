@@ -1,0 +1,128 @@
+<!-- About Page Template -->
+<div class="about-page">
+
+  <!-- About Hero -->
+  <div class="about-hero">
+    <div class="container">
+      <p class="section-eyebrow">The Maker</p>
+      <h1>About Zineb</h1>
+      <p class="about-hero-lead">A story shaped by five cities, two continents, and a lifelong love of making things by hand.</p>
+    </div>
+  </div>
+
+  <!-- Story Section -->
+  <section class="about-story section-padding">
+    <div class="container">
+      <div class="about-story-grid">
+        <div class="about-story-image">
+          <img src="{{ page.metafields.custom.portrait | image_url: width: 700 | default: '' }}" alt="Zineb" loading="lazy" class="about-portrait">
+          <!-- If no metafield image, show placeholder -->
+          <div class="about-portrait-frame"></div>
+        </div>
+        <div class="about-story-text">
+          {%- if page.content != blank -%}
+            {{ page.content }}
+          {%- else -%}
+            <h2>Where the Story Begins</h2>
+            <p>I grew up in Casablanca, surrounded by the colors and textures of Morocco's largest city — the terracotta rooftops, the deep blue of the Atlantic, the intricate tilework of the medina. Making things with your hands was always part of life there.</p>
+            <p>After studying in Montpellier and training as a chef in California, I found myself drawn not just to food, but to the vessels that hold it. I spent a year in Lisbon, where ceramic tradition runs centuries deep, learning to throw on the wheel and fire my first pieces in a shared studio overlooking the Tagus.</p>
+            <p>Now I work out of Brooklyn, NY — a city that has always made room for makers and dreamers from everywhere. My studio sits at the intersection of all those places. Each piece I make carries a little bit of all of them.</p>
+            <p>Every bowl, mug, and vase is one of a kind, thrown by hand and glazed with colors drawn from memory: the warm sand of Moroccan beaches, the misty greens of Portuguese hills, the ocean blues I've chased across three continents.</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey Timeline -->
+  <section class="about-journey section-padding section-alt">
+    <div class="container">
+      <h2 class="section-title">The Journey</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker">🌴</div>
+          <div class="timeline-body">
+            <h3>Casablanca, Morocco</h3>
+            <p>Born and raised in the vibrant colors and textures of Morocco's largest city, where traditional craftsmanship meets modern expression.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker">🎓</div>
+          <div class="timeline-body">
+            <h3>Montpellier, France</h3>
+            <p>Studied in the historic university city, absorbing European aesthetics and the refined elegance of French design.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker">🌲</div>
+          <div class="timeline-body">
+            <h3>California, USA</h3>
+            <p>Trained as a culinary chef, where the art of presentation and the beauty of functional objects became intertwined with craft.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker">🌊</div>
+          <div class="timeline-body">
+            <h3>Lisbon, Portugal</h3>
+            <p>Discovered the wheel. Lived among azulejo tiles and Atlantic light, where ceramic traditions run deep and color tells stories.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker">🌉</div>
+          <div class="timeline-body">
+            <h3>Brooklyn, New York</h3>
+            <p>Now creating in the heart of New York's creative community, where all these influences converge in each handcrafted piece.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="about-process section-padding">
+    <div class="container">
+      <h2 class="section-title">The Process</h2>
+      <p class="section-subtitle">Every piece is made by hand, start to finish, in my Brooklyn studio.</p>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="process-step-number">01</div>
+          <h3>Throwing</h3>
+          <p>Clay is wedged by hand and centered on the wheel. Each form is pulled up slowly — bowls, mugs, vessels — each one responding to the moment.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-step-number">02</div>
+          <h3>Trimming & Drying</h3>
+          <p>Once leather-hard, each piece is trimmed to refine its foot and walls, then left to dry slowly over several days.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-step-number">03</div>
+          <h3>Bisque Firing</h3>
+          <p>The first firing at 1800°F burns off organics and creates a porous surface ready to accept glaze.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-step-number">04</div>
+          <h3>Glazing</h3>
+          <p>Glazes are mixed and applied by hand — dipped, brushed, poured. This is where color and memory enter the piece.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-step-number">05</div>
+          <h3>Glaze Firing</h3>
+          <p>A final firing at 2300°F fuses glaze to clay. The kiln is opened the next morning — every piece a small surprise.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta section-padding section-alt">
+    <div class="container about-cta-inner">
+      <h2>Find Your Piece</h2>
+      <p>Each ceramic is one of a kind. Browse the current collection before it's gone.</p>
+      <div class="about-cta-buttons">
+        <a href="{{ routes.collections_url }}" class="btn btn-primary">Shop Ceramics</a>
+        <a href="{{ routes.root_url }}pages/contact" class="btn btn-outline">Commission a Custom Piece</a>
+      </div>
+    </div>
+  </section>
+
+</div>

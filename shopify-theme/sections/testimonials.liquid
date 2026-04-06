@@ -1,0 +1,84 @@
+<!-- Testimonials -->
+<section class="testimonials section-padding section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">{{ section.settings.heading | default: 'What Collectors Say' }}</h2>
+    </div>
+    <div class="testimonials-grid">
+      {%- for block in section.blocks -%}
+        <div class="testimonial-card" {{ block.shopify_attributes }}>
+          <div class="testimonial-stars">
+            {%- for i in (1..5) -%}<span class="star">★</span>{%- endfor -%}
+          </div>
+          <blockquote class="testimonial-quote">
+            "{{ block.settings.quote }}"
+          </blockquote>
+          <div class="testimonial-author">
+            <span class="author-name">{{ block.settings.author }}</span>
+            {%- if block.settings.location != blank -%}
+              <span class="author-location">{{ block.settings.location }}</span>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="testimonial-card">
+          <div class="testimonial-stars">{%- for i in (1..5) -%}<span class="star">★</span>{%- endfor -%}</div>
+          <blockquote class="testimonial-quote">"The bowl I ordered exceeded every expectation. The glaze is extraordinary — it shifts from deep ocean blue to a pale sage depending on the light. It's become the first thing I show people when they visit."</blockquote>
+          <div class="testimonial-author"><span class="author-name">Sarah M.</span><span class="author-location">Brooklyn, NY</span></div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">{%- for i in (1..5) -%}<span class="star">★</span>{%- endfor -%}</div>
+          <blockquote class="testimonial-quote">"I've bought pottery from galleries around the world. What Zineb does is something else entirely — you can feel the story in every curve. My morning coffee tastes better in her mug. I'm serious."</blockquote>
+          <div class="testimonial-author"><span class="author-name">Thomas R.</span><span class="author-location">Paris, France</span></div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">{%- for i in (1..5) -%}<span class="star">★</span>{%- endfor -%}</div>
+          <blockquote class="testimonial-quote">"Bought one piece as a gift and ended up buying three more for myself. The packaging alone was beautiful. These are heirloom-quality objects."</blockquote>
+          <div class="testimonial-author"><span class="author-name">Layla K.</span><span class="author-location">Los Angeles, CA</span></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author name"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Collectors Say"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials"
+    }
+  ]
+}
+{% endschema %}

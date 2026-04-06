@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ page_description | default: shop.description }}">
+
+  <title>
+    {%- if template == 'index' -%}
+      {{ shop.name }} — Handcrafted Ceramics
+    {%- elsif template == 'product' -%}
+      {{ product.title }} — {{ shop.name }}
+    {%- elsif template == 'collection' -%}
+      {{ collection.title }} — {{ shop.name }}
+    {%- else -%}
+      {{ page_title }} — {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {{ content_for_header }}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+</head>
+
+<body class="template-{{ template | replace: '.', '-' }}">
+
+  <!-- Announcement Bar -->
+  {%- if settings.show_announcement -%}
+  <div class="announcement-bar">
+    <p>{{ settings.announcement_text | default: 'Free shipping on orders over $150 · Handcrafted in Brooklyn, NY' }}</p>
+  </div>
+  {%- endif -%}
+
+  <!-- Navigation -->
+  <header class="site-header" id="siteHeader">
+    <nav class="navbar">
+      <div class="nav-container">
+
+        <!-- Logo -->
+        <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }}">
+          {%- if settings.logo != blank -%}
+            <img src="{{ settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" class="logo-image">
+          {%- else -%}
+            <span class="logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+
+        <!-- Desktop nav -->
+        <ul class="nav-menu">
+          <li><a href="{{ routes.root_url }}">Home</a></li>
+          <li><a href="{{ routes.collections_url }}">Shop</a></li>
+          {%- for link in linklists.main-menu.links -%}
+            <li>
+              <a href="{{ link.url }}" {% if link.active %}class="active"{% endif %}>
+                {{ link.title }}
+              </a>
+            </li>
+          {%- endfor -%}
+          <li><a href="{{ routes.root_url }}pages/about">About</a></li>
+          <li><a href="{{ routes.root_url }}pages/contact">Contact</a></li>
+        </ul>
+
+        <!-- Nav actions -->
+        <div class="nav-actions">
+          <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </a>
+          <a href="{{ routes.cart_url }}" class="nav-icon cart-icon" aria-label="Cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            <span class="cart-count" id="cartCount">{{ cart.item_count }}</span>
+          </a>
+          <button class="hamburger" aria-label="Menu" id="hamburger">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        <li><a href="{{ routes.collections_url }}">Shop</a></li>
+        <li><a href="{{ routes.root_url }}pages/about">About</a></li>
+        <li><a href="{{ routes.root_url }}pages/contact">Contact</a></li>
+        <li><a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="MainContent">
+    {{ content_for_layout }}
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-grid">
+
+          <div class="footer-brand">
+            {%- if settings.logo != blank -%}
+              <img src="{{ settings.logo | image_url: width: 160 }}" alt="{{ shop.name }}" class="footer-logo">
+            {%- else -%}
+              <span class="footer-logo-text">{{ shop.name }}</span>
+            {%- endif -%}
+            <p>Handcrafted ceramics shaped by the spirit of Morocco and the energy of Brooklyn. Each piece is unique, made with intention.</p>
+            <div class="social-links">
+              {%- if settings.instagram_url != blank -%}
+              <a href="{{ settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </a>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <div class="footer-nav">
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="{{ routes.collections_url }}">All Ceramics</a></li>
+              <li><a href="{{ routes.root_url }}collections/bowls">Bowls</a></li>
+              <li><a href="{{ routes.root_url }}collections/mugs">Mugs</a></li>
+              <li><a href="{{ routes.root_url }}collections/vases">Vases & Objects</a></li>
+              <li><a href="{{ routes.root_url }}collections/sets">Sets</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-nav">
+            <h4>Information</h4>
+            <ul>
+              <li><a href="{{ routes.root_url }}pages/about">About Zineb</a></li>
+              <li><a href="{{ routes.root_url }}pages/contact">Contact</a></li>
+              <li><a href="{{ routes.root_url }}pages/shipping">Shipping & Returns</a></li>
+              <li><a href="{{ routes.root_url }}pages/care">Ceramic Care</a></li>
+              <li><a href="{{ routes.root_url }}pages/custom-orders">Custom Orders</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-newsletter">
+            <h4>Stay Connected</h4>
+            <p>New pieces drop weekly. Be the first to know.</p>
+            <form class="newsletter-form" action="/contact#contact_form" method="post">
+              <input type="hidden" name="form_type" value="customer">
+              <input type="hidden" name="utf8" value="✓">
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="newsletter-field">
+                <input type="email" name="contact[email]" placeholder="your@email.com" required>
+                <button type="submit">Subscribe</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="{{ routes.root_url }}policies/privacy-policy">Privacy</a>
+          <a href="{{ routes.root_url }}policies/terms-of-service">Terms</a>
+          <a href="{{ routes.root_url }}policies/refund-policy">Refunds</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  {{ 'theme.js' | asset_url | script_tag }}
+</body>
+</html>

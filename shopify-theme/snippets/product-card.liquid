@@ -1,0 +1,83 @@
+<!-- Product Card Snippet -->
+{%- assign card_product = product -%}
+
+<div class="product-card">
+  <a href="{{ card_product.url }}" class="product-card-link">
+    <div class="product-card-image">
+      {%- if card_product.featured_image != blank -%}
+        <img
+          src="{{ card_product.featured_image | image_url: width: 600 }}"
+          srcset="{{ card_product.featured_image | image_url: width: 400 }} 400w,
+                  {{ card_product.featured_image | image_url: width: 600 }} 600w,
+                  {{ card_product.featured_image | image_url: width: 900 }} 900w"
+          sizes="(max-width: 768px) calc(50vw - 20px), 25vw"
+          alt="{{ card_product.featured_image.alt | default: card_product.title }}"
+          loading="lazy"
+          class="product-img product-img-primary"
+        >
+        {%- if card_product.images.size > 1 -%}
+          <img
+            src="{{ card_product.images[1] | image_url: width: 600 }}"
+            alt="{{ card_product.images[1].alt | default: card_product.title }}"
+            loading="lazy"
+            class="product-img product-img-hover"
+          >
+        {%- endif -%}
+      {%- else -%}
+        <div class="product-img-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+          </svg>
+        </div>
+      {%- endif -%}
+
+      <!-- Badges -->
+      <div class="product-badges">
+        {%- if card_product.available == false -%}
+          <span class="badge badge-soldout">Sold Out</span>
+        {%- elsif card_product.compare_at_price > card_product.price -%}
+          <span class="badge badge-sale">Sale</span>
+        {%- elsif card_product.created_at > 'now' | date: '%Y-%m-%d' | date_modify: '-30 days' -%}
+          <span class="badge badge-new">New</span>
+        {%- endif -%}
+      </div>
+
+      <!-- Quick add button -->
+      {%- if card_product.available -%}
+        {%- if card_product.variants.size == 1 -%}
+          <button
+            class="quick-add-btn"
+            data-variant-id="{{ card_product.variants.first.id }}"
+            aria-label="Add {{ card_product.title }} to cart"
+          >
+            Add to Cart
+          </button>
+        {%- else -%}
+          <a href="{{ card_product.url }}" class="quick-add-btn">Choose Options</a>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    <div class="product-card-info">
+      {%- if card_product.type != blank -%}
+        <p class="product-card-type">{{ card_product.type }}</p>
+      {%- endif -%}
+      <h3 class="product-card-title">{{ card_product.title }}</h3>
+      <div class="product-card-price">
+        {%- if card_product.available -%}
+          {%- if card_product.compare_at_price > card_product.price -%}
+            <span class="price-compare">{{ card_product.compare_at_price | money }}</span>
+            <span class="price-sale">{{ card_product.price | money }}</span>
+          {%- else -%}
+            <span class="price">{{ card_product.price | money }}</span>
+          {%- endif -%}
+          {%- if card_product.price_varies -%}
+            <span class="price-from">From </span>
+          {%- endif -%}
+        {%- else -%}
+          <span class="price-soldout">Sold Out</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </a>
+</div>

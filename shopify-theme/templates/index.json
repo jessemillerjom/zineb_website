@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "heading": "Handcrafted Ceramics from the Heart",
+        "subheading": "Each piece shaped by hand in Brooklyn, carrying the colors of Morocco.",
+        "button_label": "Shop Ceramics",
+        "button_url": "/collections/all"
+      }
+    },
+    "featured-collections": {
+      "type": "featured-collections",
+      "settings": {
+        "heading": "Shop by Category"
+      }
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "New Arrivals",
+        "collection": "new-arrivals"
+      }
+    },
+    "about-preview": {
+      "type": "about-preview",
+      "settings": {}
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "heading": "What Collectors Say"
+      }
+    },
+    "instagram-strip": {
+      "type": "instagram-strip",
+      "settings": {
+        "heading": "Follow the Process"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured-collections",
+    "featured-products",
+    "about-preview",
+    "testimonials",
+    "instagram-strip"
+  ]
+}

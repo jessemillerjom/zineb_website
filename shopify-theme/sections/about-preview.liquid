@@ -1,0 +1,84 @@
+<!-- About Preview -->
+<section class="about-preview section-padding">
+  <div class="container">
+    <div class="about-preview-grid">
+      <div class="about-preview-images">
+        {%- if section.settings.image_1 != blank -%}
+          <div class="about-img about-img-1">
+            <img src="{{ section.settings.image_1 | image_url: width: 600 }}" alt="Zineb at work" loading="lazy">
+          </div>
+        {%- else -%}
+          <div class="about-img about-img-1 about-img-placeholder">
+            <div class="img-placeholder-inner"></div>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.image_2 != blank -%}
+          <div class="about-img about-img-2">
+            <img src="{{ section.settings.image_2 | image_url: width: 400 }}" alt="Zineb ceramics detail" loading="lazy">
+          </div>
+        {%- else -%}
+          <div class="about-img about-img-2 about-img-placeholder">
+            <div class="img-placeholder-inner"></div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="about-preview-text">
+        <p class="section-eyebrow">The Story</p>
+        <h2 class="section-title">{{ section.settings.heading | default: 'Where Morocco Meets Brooklyn' }}</h2>
+        <div class="about-preview-body">
+          {{ section.settings.text | default: "<p>Born in Casablanca, shaped by years of wandering through Montpellier, California, Lisbon, and finally landing in Brooklyn — Zineb brings all of those places into every piece she makes.</p><p>Each bowl, mug, and vase is thrown on the wheel by hand, glazed with colors drawn from memory: the ocean blues of the Atlantic, the warm terracotta of Moroccan rooftops, the deep forest greens of the Portuguese hills.</p>" }}
+        </div>
+        <div class="about-preview-details">
+          <div class="about-detail">
+            <span class="detail-number">100%</span>
+            <span class="detail-label">Handmade</span>
+          </div>
+          <div class="about-detail">
+            <span class="detail-number">1 of 1</span>
+            <span class="detail-label">Each piece unique</span>
+          </div>
+          <div class="about-detail">
+            <span class="detail-number">BK</span>
+            <span class="detail-label">Made in Brooklyn</span>
+          </div>
+        </div>
+        <a href="{{ routes.root_url }}pages/about" class="btn btn-primary">Read the Full Story</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Preview",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Secondary image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Where Morocco Meets Brooklyn"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Preview"
+    }
+  ]
+}
+{% endschema %}

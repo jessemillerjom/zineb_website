@@ -1,0 +1,64 @@
+<!-- Collection Template -->
+<div class="collection-page">
+
+  <!-- Collection Header -->
+  <div class="collection-header">
+    {%- if collection.image -%}
+      <div class="collection-hero-image">
+        <img src="{{ collection.image | image_url: width: 1600 }}" alt="{{ collection.title }}" loading="eager">
+        <div class="collection-hero-overlay"></div>
+      </div>
+    {%- endif -%}
+    <div class="container">
+      <h1 class="collection-title">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="collection-description">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Filter & Sort Bar -->
+    <div class="collection-toolbar">
+      <p class="product-count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'piece', 'pieces' }}</p>
+      <div class="collection-sort">
+        <label for="sort-by">Sort by</label>
+        <select id="sort-by" onchange="location.href=this.value;">
+          {%- assign sort_options = collection.sort_options -%}
+          {%- for option in sort_options -%}
+            <option
+              value="{{ collection.url }}?sort_by={{ option.value }}"
+              {% if collection.sort_by == option.value %}selected{% endif %}
+            >
+              {{ option.name }}
+            </option>
+          {%- endfor -%}
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    {%- if collection.products.size > 0 -%}
+      <div class="products-grid products-grid-collection">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+
+      <!-- Pagination -->
+      {%- if paginate.pages > 1 -%}
+        <div class="pagination">
+          {{ paginate | default_pagination }}
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      <div class="collection-empty">
+        <p>No pieces here yet — check back soon.</p>
+        <a href="{{ routes.collections_url }}" class="btn btn-primary">View All Collections</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% paginate collection.products by 12 %}{% endpaginate %}

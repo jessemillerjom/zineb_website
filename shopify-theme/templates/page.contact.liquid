@@ -1,0 +1,81 @@
+<!-- Contact Page -->
+<div class="contact-page">
+  <div class="container">
+    <div class="contact-header">
+      <h1>Get in Touch</h1>
+      <p class="contact-lead">Interested in a custom commission, a wholesale inquiry, or just want to know more about the work? I'd love to hear from you.</p>
+    </div>
+
+    <div class="contact-layout">
+      <div class="contact-form-wrap">
+        {%- form 'contact', id: 'ContactForm' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="form-success">
+              <p>Thank you! Your message has been sent. I'll be in touch within 2–3 business days.</p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="form-errors">
+              <p>Please fix the following errors:</p>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>{{ field | capitalize }}: {{ form.errors.messages[field] }}</li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ContactFormName">Name *</label>
+              <input type="text" id="ContactFormName" name="contact[name]" value="{{ form.name }}" required placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="ContactFormEmail">Email *</label>
+              <input type="email" id="ContactFormEmail" name="contact[email]" value="{{ form.email }}" required placeholder="your@email.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ContactFormSubject">Subject</label>
+            <select id="ContactFormSubject" name="contact[subject]">
+              <option value="">— Select a topic —</option>
+              <option value="Custom Order">Custom / Commission Order</option>
+              <option value="Order Inquiry">Order Inquiry</option>
+              <option value="Wholesale">Wholesale</option>
+              <option value="Press">Press & Media</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="ContactFormMessage">Message *</label>
+            <textarea id="ContactFormMessage" name="contact[body]" rows="6" required placeholder="Tell me about what you're looking for...">{{ form.body }}</textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        {%- endform -%}
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-info-block">
+          <h3>Studio</h3>
+          <p>Brooklyn, New York</p>
+        </div>
+        <div class="contact-info-block">
+          <h3>Custom Orders</h3>
+          <p>I accept commissions for bespoke pieces — a specific color palette, a set for a dinner party, a wedding gift. Lead time is typically 6–8 weeks.</p>
+        </div>
+        <div class="contact-info-block">
+          <h3>Wholesale</h3>
+          <p>I work with a small number of carefully chosen shops and restaurants. Get in touch to discuss.</p>
+        </div>
+        <div class="contact-info-block">
+          <h3>Response Time</h3>
+          <p>I reply to all messages within 2–3 business days.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

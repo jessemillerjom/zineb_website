@@ -1,0 +1,35 @@
+<!-- All Collections Template -->
+<div class="collections-all-page">
+  <div class="collection-header">
+    <div class="container">
+      <h1 class="collection-title">Shop All Ceramics</h1>
+      <p class="collection-description">Handcrafted pieces shaped with intention, one at a time.</p>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top: 60px; padding-bottom: 80px;">
+    <div class="collections-grid">
+      {%- for collection in collections -%}
+        {%- unless collection.handle == 'frontpage' -%}
+          <a href="{{ collection.url }}" class="collection-card">
+            <div class="collection-card-image">
+              {%- if collection.image -%}
+                <img src="{{ collection.image | image_url: width: 600 }}" alt="{{ collection.title }}" loading="lazy">
+              {%- else -%}
+                <div class="collection-placeholder-bg collection-placeholder-bowls"></div>
+              {%- endif -%}
+              <div class="collection-card-overlay"></div>
+            </div>
+            <div class="collection-card-content">
+              <h3>{{ collection.title }}</h3>
+              {%- if collection.description != blank -%}
+                <p>{{ collection.description | strip_html | truncate: 80 }}</p>
+              {%- endif -%}
+              <span class="collection-link">Shop now →</span>
+            </div>
+          </a>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

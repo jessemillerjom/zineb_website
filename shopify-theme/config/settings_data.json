@@ -1,0 +1,11 @@
+{
+  "current": {
+    "show_announcement": true,
+    "announcement_text": "Free shipping on orders over $150 · Handcrafted in Brooklyn, NY",
+    "color_primary": "#C97D60",
+    "color_secondary": "#2E5266",
+    "color_accent": "#F4A460",
+    "color_background": "#F9F7F4",
+    "color_text": "#2C2C2C"
+  }
+}

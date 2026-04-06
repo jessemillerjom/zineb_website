@@ -1,0 +1,74 @@
+<!-- Search Template -->
+<div class="search-page">
+  <div class="container">
+    <h1 class="cart-title">Search</h1>
+
+    <form action="{{ routes.search_url }}" method="get" class="search-form">
+      <div class="search-input-wrap">
+        <input
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="Search for ceramics, bowls, mugs…"
+          aria-label="Search"
+          class="search-input"
+        >
+        <button type="submit" class="search-submit" aria-label="Submit">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <p class="search-results-count">{{ search.results_count }} result{{ search.results_count | plural: '', 's' }} for <em>"{{ search.terms }}"</em></p>
+        <div class="products-grid products-grid-collection" style="margin-top: 40px;">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="cart-empty">
+          <h2>No results for "{{ search.terms }}"</h2>
+          <p>Try a different search, or browse the full collection.</p>
+          <a href="{{ routes.collections_url }}" class="btn btn-primary">Shop Ceramics</a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+.search-page { padding: 60px 0 100px; }
+.search-form { margin-bottom: 48px; }
+.search-input-wrap {
+  display: flex;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-width: 600px;
+}
+.search-input {
+  flex: 1;
+  padding: 16px 20px;
+  font-size: 1rem;
+  border: none;
+  background: var(--white);
+  color: var(--charcoal);
+}
+.search-input:focus { outline: none; }
+.search-submit {
+  padding: 0 20px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.search-submit:hover { background: var(--primary-dk); }
+.search-results-count { color: var(--text-muted); font-size: 0.9rem; }
+</style>

@@ -1,0 +1,111 @@
+<!-- Cart Template -->
+<div class="cart-page">
+  <div class="container">
+    <h1 class="cart-title">Your Cart</h1>
+
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-form">
+        <div class="cart-layout">
+
+          <!-- Cart Items -->
+          <div class="cart-items">
+            {%- for item in cart.items -%}
+              <div class="cart-item">
+                <a href="{{ item.url }}" class="cart-item-image">
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title }}" loading="lazy">
+                  {%- else -%}
+                    <div class="cart-item-no-image"></div>
+                  {%- endif -%}
+                </a>
+
+                <div class="cart-item-details">
+                  <div class="cart-item-header">
+                    <div>
+                      <a href="{{ item.url }}" class="cart-item-name">{{ item.product.title }}</a>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <p class="cart-item-variant">{{ item.variant.title }}</p>
+                      {%- endunless -%}
+                    </div>
+                    <p class="cart-item-price">{{ item.final_line_price | money }}</p>
+                  </div>
+
+                  <div class="cart-item-footer">
+                    <div class="cart-item-qty">
+                      <button type="button" class="qty-btn qty-minus cart-qty-btn" data-line="{{ forloop.index }}">−</button>
+                      <input
+                        type="number"
+                        name="updates[]"
+                        id="updates_{{ item.key }}"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        class="qty-number cart-qty-number"
+                        data-line="{{ forloop.index }}"
+                      >
+                      <button type="button" class="qty-btn qty-plus cart-qty-btn" data-line="{{ forloop.index }}">+</button>
+                    </div>
+                    <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="cart-item-remove">Remove</a>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <!-- Cart Summary -->
+          <div class="cart-summary">
+            <div class="cart-summary-inner">
+              <h2>Order Summary</h2>
+
+              <div class="cart-totals">
+                <div class="cart-total-row">
+                  <span>Subtotal</span>
+                  <span>{{ cart.total_price | money }}</span>
+                </div>
+                <div class="cart-total-row">
+                  <span>Shipping</span>
+                  <span class="shipping-note">Calculated at checkout</span>
+                </div>
+              </div>
+
+              <p class="cart-note">Taxes and shipping calculated at checkout. Free shipping on US orders over $150.</p>
+
+              <button type="submit" name="checkout" class="btn btn-primary btn-checkout">
+                Proceed to Checkout →
+              </button>
+
+              <a href="{{ routes.collections_url }}" class="btn btn-outline btn-continue">
+                Continue Shopping
+              </a>
+
+              <div class="cart-trust">
+                <div class="trust-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Secure checkout</span>
+                </div>
+                <div class="trust-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                  <span>All major cards accepted</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+    {%- else -%}
+      <div class="cart-empty">
+        <div class="cart-empty-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <h2>Your cart is empty</h2>
+        <p>Discover handcrafted ceramics waiting for a home.</p>
+        <a href="{{ routes.collections_url }}" class="btn btn-primary">Shop Ceramics</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

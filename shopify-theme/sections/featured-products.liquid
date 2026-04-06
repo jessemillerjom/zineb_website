@@ -1,0 +1,86 @@
+<!-- Featured Products -->
+<section class="featured-products section-padding section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">{{ section.settings.heading | default: 'New Arrivals' }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="section-subtitle">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- assign featured_collection = collections[section.settings.collection] -%}
+    {%- if featured_collection != blank and featured_collection.products.size > 0 -%}
+      <div class="products-grid">
+        {%- for product in featured_collection.products limit: section.settings.products_count -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <!-- Placeholder when no collection is set -->
+      <div class="products-grid">
+        {%- for i in (1..4) -%}
+          <div class="product-card product-card-placeholder">
+            <div class="product-card-image">
+              <div class="product-image-placeholder">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                  <line x1="9" y1="9" x2="9.01" y2="9"/>
+                  <line x1="15" y1="9" x2="15.01" y2="9"/>
+                </svg>
+              </div>
+            </div>
+            <div class="product-card-info">
+              <p class="product-card-type">Handcrafted Ceramic</p>
+              <h3 class="product-card-title">Coming soon</h3>
+              <p class="product-card-price">—</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="section-cta">
+      <a href="{{ routes.collections_url }}" class="btn btn-primary">View All Ceramics</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Fresh from the kiln"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to feature"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Number of products",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}
