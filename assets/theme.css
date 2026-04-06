@@ -1037,6 +1037,12 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
   max-height: 600px;
   object-fit: cover;
 }
+.about-portrait-placeholder {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--terracotta) 0%, var(--orange) 60%, var(--sand) 100%);
+}
 .about-portrait-frame {
   position: absolute;
   top: -12px; left: -12px;

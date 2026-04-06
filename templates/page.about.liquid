@@ -15,8 +15,12 @@
     <div class="container">
       <div class="about-story-grid">
         <div class="about-story-image">
-          <img src="{{ page.metafields.custom.portrait | image_url: width: 700 | default: '' }}" alt="Zineb" loading="lazy" class="about-portrait">
-          <!-- If no metafield image, show placeholder -->
+          {%- assign portrait = page.metafields.custom.portrait.value -%}
+          {%- if portrait != blank -%}
+            <img src="{{ portrait | image_url: width: 700 }}" alt="Zineb" loading="lazy" class="about-portrait">
+          {%- else -%}
+            <div class="about-portrait-placeholder"></div>
+          {%- endif -%}
           <div class="about-portrait-frame"></div>
         </div>
         <div class="about-story-text">

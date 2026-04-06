@@ -11,79 +11,72 @@
     {%- endif -%}
 
     <div class="collections-grid">
-      {%- for block in section.blocks -%}
-        {%- assign collection = collections[block.settings.collection] -%}
-        <a href="{{ collection.url | default: '/collections/all' }}" class="collection-card" {{ block.shopify_attributes }}>
-          <div class="collection-card-image">
-            {%- if block.settings.image != blank -%}
-              <img
-                src="{{ block.settings.image | image_url: width: 600 }}"
-                srcset="{{ block.settings.image | image_url: width: 400 }} 400w,
-                        {{ block.settings.image | image_url: width: 600 }} 600w,
-                        {{ block.settings.image | image_url: width: 900 }} 900w"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                alt="{{ block.settings.title | default: collection.title }}"
-                loading="lazy"
-              >
-            {%- elsif collection.image != blank -%}
-              <img
-                src="{{ collection.image | image_url: width: 600 }}"
-                alt="{{ collection.title }}"
-                loading="lazy"
-              >
-            {%- else -%}
-              <div class="collection-placeholder">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                  <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
-                  <path d="M7 10c0-1.5 2-3 5-3s5 1.5 5 3v8H7v-8z"/>
-                </svg>
-              </div>
-            {%- endif -%}
-            <div class="collection-card-overlay"></div>
-          </div>
-          <div class="collection-card-content">
-            <h3>{{ block.settings.title | default: collection.title }}</h3>
-            {%- if block.settings.description != blank -%}
-              <p>{{ block.settings.description }}</p>
-            {%- elsif collection.description != blank -%}
-              <p>{{ collection.description | strip_html | truncate: 80 }}</p>
-            {%- endif -%}
-            <span class="collection-link">Shop now →</span>
-          </div>
-        </a>
+      {%- if section.blocks.size > 0 -%}
+        {%- comment -%} Use manually configured blocks from the theme editor {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          {%- assign col = collections[block.settings.collection] -%}
+          <a href="{{ col.url | default: routes.collections_url }}" class="collection-card" {{ block.shopify_attributes }}>
+            <div class="collection-card-image">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 900 }}" alt="{{ block.settings.title | default: col.title }}" loading="lazy">
+              {%- elsif col.image != blank -%}
+                <img src="{{ col.image | image_url: width: 900 }}" alt="{{ col.title }}" loading="lazy">
+              {%- elsif col.products.first.featured_image != blank -%}
+                <img src="{{ col.products.first.featured_image | image_url: width: 900 }}" alt="{{ col.title }}" loading="lazy">
+              {%- else -%}
+                <div class="collection-placeholder-bg collection-placeholder-bowls"></div>
+              {%- endif -%}
+              <div class="collection-card-overlay"></div>
+            </div>
+            <div class="collection-card-content">
+              <h3>{{ block.settings.title | default: col.title }}</h3>
+              {%- if block.settings.description != blank -%}
+                <p>{{ block.settings.description }}</p>
+              {%- elsif col.description != blank -%}
+                <p>{{ col.description | strip_html | truncate: 80 }}</p>
+              {%- endif -%}
+              <span class="collection-link">Shop now →</span>
+            </div>
+          </a>
+        {%- endfor -%}
       {%- else -%}
-        <!-- Default collection cards when no blocks are set -->
-        <a href="/collections/bowls" class="collection-card">
-          <div class="collection-card-image collection-placeholder-bg collection-placeholder-bowls">
-            <div class="collection-card-overlay"></div>
-          </div>
-          <div class="collection-card-content">
-            <h3>Bowls</h3>
-            <p>Ocean blues, warm sands, and deep forest greens</p>
-            <span class="collection-link">Shop now →</span>
-          </div>
-        </a>
-        <a href="/collections/mugs" class="collection-card">
-          <div class="collection-card-image collection-placeholder-bg collection-placeholder-mugs">
-            <div class="collection-card-overlay"></div>
-          </div>
-          <div class="collection-card-content">
-            <h3>Mugs</h3>
-            <p>Start every morning with something beautiful</p>
-            <span class="collection-link">Shop now →</span>
-          </div>
-        </a>
-        <a href="/collections/objects" class="collection-card">
-          <div class="collection-card-image collection-placeholder-bg collection-placeholder-objects">
-            <div class="collection-card-overlay"></div>
-          </div>
-          <div class="collection-card-content">
-            <h3>Objects & Vases</h3>
-            <p>Sculptural pieces to anchor any space</p>
-            <span class="collection-link">Shop now →</span>
-          </div>
-        </a>
-      {%- endfor -%}
+        {%- comment -%} Auto-pull from store collections when no blocks configured yet {%- endcomment -%}
+        {%- assign shown = 0 -%}
+        {%- for col in collections -%}
+          {%- if col.handle != 'frontpage' and shown < 3 -%}
+            <a href="{{ col.url }}" class="collection-card">
+              <div class="collection-card-image">
+                {%- if col.image != blank -%}
+                  <img src="{{ col.image | image_url: width: 900 }}" alt="{{ col.title }}" loading="lazy">
+                {%- elsif col.products.first.featured_image != blank -%}
+                  <img src="{{ col.products.first.featured_image | image_url: width: 900 }}" alt="{{ col.title }}" loading="lazy">
+                {%- else -%}
+                  <div class="collection-placeholder-bg collection-placeholder-bowls"></div>
+                {%- endif -%}
+                <div class="collection-card-overlay"></div>
+              </div>
+              <div class="collection-card-content">
+                <h3>{{ col.title }}</h3>
+                {%- if col.description != blank -%}<p>{{ col.description | strip_html | truncate: 80 }}</p>{%- endif -%}
+                <span class="collection-link">Shop now →</span>
+              </div>
+            </a>
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if shown == 0 -%}
+          <a href="{{ routes.collections_url }}" class="collection-card">
+            <div class="collection-card-image collection-placeholder-bg collection-placeholder-bowls">
+              <div class="collection-card-overlay"></div>
+            </div>
+            <div class="collection-card-content">
+              <h3>All Ceramics</h3>
+              <p>Browse the full collection</p>
+              <span class="collection-link">Shop now →</span>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endif -%}
     </div>
   </div>
 </section>
